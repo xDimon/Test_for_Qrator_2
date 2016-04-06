@@ -38,7 +38,7 @@ public:
 	explicit ThreadPool(unsigned int workerNumber);
 	virtual ~ThreadPool();
 
-	void Enqueue(IAction *action, IAction::Prio prio);
+	bool Enqueue(IAction *action, IAction::Prio prio);
 	void Stop();
 };
 

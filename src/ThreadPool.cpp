@@ -55,7 +55,7 @@ void ThreadPool::Stop()
 	}
 }
 
-void ThreadPool::Enqueue(IAction *action, IAction::Prio prio)
+bool ThreadPool::Enqueue(IAction *action, IAction::Prio prio)
 {
 	std::queue<IAction *> *queue;
 
@@ -64,7 +64,7 @@ void ThreadPool::Enqueue(IAction *action, IAction::Prio prio)
 	if (_stopped)
 	{
 		pthread_mutex_unlock(&_mutex);
-		return;
+		return false;
 	}
 
 	switch (prio)
@@ -87,6 +87,8 @@ void ThreadPool::Enqueue(IAction *action, IAction::Prio prio)
 	pthread_cond_signal(&_condition);
 
 	pthread_mutex_unlock(&_mutex);
+
+	return true;
 }
 
 void *ThreadPool::Worker(void *arg)
